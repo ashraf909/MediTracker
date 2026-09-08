@@ -1,0 +1,24 @@
+<resources>
+    <color name="navy">#081A3A</color>
+    <color name="navy_soft">#31415F</color>
+    <color name="teal">#0EAAA8</color>
+    <color name="teal_dark">#087D7B</color>
+    <color name="teal_soft">#E1F7F6</color>
+    <color name="coral">#F36D5E</color>
+    <color name="violet">#7866B5</color>
+    <color name="blue">#4E91BD</color>
+    <color name="amber">#E39A28</color>
+    <color name="pill_coral">#C94B54</color>
+    <color name="pill_blue">#276E99</color>
+    <color name="pill_amber">#9A5A00</color>
+    <color name="page">#F9FCFD</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="line">#DFEAED</color>
+    <color name="muted">#68758B</color>
+    <color name="success">#0B9C83</color>
+    <color name="danger">#C94B54</color>
+    <color name="white">#FFFFFF</color>
+    <color name="page_tint">#F3F8FA</color>
+    <color name="teal_faint">#F0FAFA</color>
+    <color name="date_inactive">#F2F6F7</color>
+</resources>
