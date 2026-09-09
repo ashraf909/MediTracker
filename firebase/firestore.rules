@@ -1,0 +1,62 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isMember() {
+      return signedIn() && request.auth.uid in resource.data.memberUids;
+    }
+
+    function isJoiningWithKey() {
+      return signedIn()
+        && !(request.auth.uid in resource.data.memberUids)
+        && resource.data.pairingEnabled == true
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['memberUids', 'caregivers', 'updatedAt'])
+        && request.resource.data.memberUids.hasAll(resource.data.memberUids)
+        && request.resource.data.memberUids.hasAny([request.auth.uid])
+        && request.resource.data.memberUids.size() == resource.data.memberUids.size() + 1
+        && request.resource.data.caregivers.hasAll(resource.data.caregivers)
+        && request.resource.data.caregivers.size() == resource.data.caregivers.size() + 1;
+    }
+
+    function isReconnectingPatient() {
+      return signedIn()
+        && !(request.auth.uid in resource.data.memberUids)
+        && resource.data.pairingEnabled == true
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['memberUids', 'updatedAt'])
+        && request.resource.data.memberUids.hasAll(resource.data.memberUids)
+        && request.resource.data.memberUids.hasAny([request.auth.uid])
+        && request.resource.data.memberUids.size() == resource.data.memberUids.size() + 1;
+    }
+
+    match /families/{familyId} {
+      // Patients create a family that they own.
+      allow create: if signedIn()
+        && familyId.size() == 8
+        && request.resource.data.ownerUid == request.auth.uid
+        && request.resource.data.pairingEnabled == true
+        && request.resource.data.memberUids.size() == 1
+        && request.resource.data.memberUids[0] == request.auth.uid;
+
+      // Exact-key lookup is allowed while pairing is enabled. Listing families is never allowed.
+      allow get: if signedIn()
+        && (request.auth.uid in resource.data.memberUids || resource.data.pairingEnabled == true);
+      allow list: if false;
+
+      // Existing members may update app data but cannot change ownership or membership.
+      // A new caregiver may only add their own UID and one caregiver profile.
+      allow update: if (isMember()
+        && request.resource.data.ownerUid == resource.data.ownerUid
+        && request.resource.data.memberUids == resource.data.memberUids)
+        || isJoiningWithKey()
+        || isReconnectingPatient();
+
+      allow delete: if signedIn() && request.auth.uid == resource.data.ownerUid;
+    }
+  }
+}
