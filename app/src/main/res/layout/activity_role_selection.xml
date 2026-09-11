@@ -1,0 +1,140 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/page"
+    android:clipToPadding="false"
+    android:fillViewport="true">
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:paddingStart="22dp" android:paddingTop="22dp"
+        android:paddingEnd="22dp" android:paddingBottom="28dp">
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical">
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:text="@string/app_name" android:textColor="@color/navy" android:textSize="21sp" android:textStyle="bold" />
+            <com.google.android.material.button.MaterialButton android:id="@+id/languageButton"
+                android:layout_width="wrap_content" android:layout_height="40dp" android:minWidth="0dp"
+                android:paddingStart="12dp" android:paddingEnd="12dp" android:text="@string/language_short"
+                android:textAllCaps="false" android:textColor="@color/teal_dark" android:textSize="12sp" android:textStyle="bold"
+                app:backgroundTint="@color/teal_soft" app:cornerRadius="13dp" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/bg_soft"
+                android:layout_marginStart="6dp"
+                android:paddingStart="12dp" android:paddingTop="7dp" android:paddingEnd="12dp" android:paddingBottom="7dp"
+                android:text="@string/simple_care" android:textColor="@color/teal_dark" android:textSize="12sp" android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="48dp"
+            android:text="@string/welcome_label" android:textColor="@color/teal_dark" android:textSize="12sp" android:textStyle="bold" android:letterSpacing="0.12" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp"
+            android:text="@string/welcome_title" android:textColor="@color/navy" android:textSize="34sp"
+            android:textStyle="bold" android:lineSpacingExtra="1dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp"
+            android:text="@string/welcome_description"
+            android:textColor="@color/muted" android:textSize="15sp" android:lineSpacingExtra="3dp" />
+
+        <LinearLayout android:id="@+id/roleButtons" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="30dp" android:orientation="vertical">
+            <com.google.android.material.button.MaterialButton android:id="@+id/patientRoleButton"
+                android:layout_width="match_parent" android:layout_height="68dp" android:gravity="start|center_vertical"
+                android:paddingStart="20dp" android:paddingEnd="20dp" android:text="@string/patient_role"
+                android:textAllCaps="false" android:textColor="@color/navy" android:textSize="17sp" android:textStyle="bold"
+                app:backgroundTint="@color/surface" app:cornerRadius="18dp" app:strokeColor="@color/line" app:strokeWidth="1dp" />
+            <com.google.android.material.button.MaterialButton android:id="@+id/caregiverRoleButton"
+                android:layout_width="match_parent" android:layout_height="68dp" android:layout_marginTop="12dp"
+                android:gravity="start|center_vertical" android:paddingStart="20dp" android:paddingEnd="20dp"
+                android:text="@string/caregiver_role"
+                android:textAllCaps="false" android:textColor="@color/navy" android:textSize="17sp" android:textStyle="bold"
+                app:backgroundTint="@color/surface" app:cornerRadius="18dp" app:strokeColor="@color/line" app:strokeWidth="1dp" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="18dp"
+                android:gravity="center" android:text="@string/roles_summary"
+                android:textColor="@color/muted" android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/patientForm" android:visibility="gone" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="28dp" android:orientation="vertical">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/patient_setup"
+                android:textColor="@color/navy" android:textSize="26sp" android:textStyle="bold" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="5dp"
+                android:text="@string/patient_setup_description"
+                android:textColor="@color/muted" android:textSize="14sp" android:lineSpacingExtra="2dp" />
+
+            <com.google.android.material.textfield.TextInputLayout style="@style/MediTrackerInput"
+                android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="22dp" android:hint="@string/patient_name">
+                <com.google.android.material.textfield.TextInputEditText android:id="@+id/patientNameInput"
+                    android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textPersonName" android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout style="@style/MediTrackerInput"
+                android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:hint="@string/age">
+                <com.google.android.material.textfield.TextInputEditText android:id="@+id/patientAgeInput"
+                    android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="number" android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.button.MaterialButton android:id="@+id/createPatientButton"
+                android:layout_width="match_parent" android:layout_height="56dp" android:layout_marginTop="16dp"
+                android:text="@string/create_family_key" android:textAllCaps="false" android:textColor="@color/white"
+                android:textSize="15sp" android:textStyle="bold" app:backgroundTint="@color/teal" app:cornerRadius="16dp" />
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="22dp"
+                android:background="@drawable/bg_profile_accent" android:orientation="vertical" android:padding="16dp">
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/existing_family_key"
+                    android:textColor="@color/navy" android:textSize="15sp" android:textStyle="bold" />
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="3dp"
+                    android:text="@string/reconnect_description"
+                    android:textColor="@color/muted" android:textSize="13sp" />
+                <com.google.android.material.textfield.TextInputLayout style="@style/MediTrackerInput"
+                    android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:hint="@string/family_key_example">
+                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/patientCodeInput"
+                        android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textCapCharacters" android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.button.MaterialButton android:id="@+id/reconnectPatientButton"
+                    android:layout_width="match_parent" android:layout_height="52dp" android:layout_marginTop="10dp"
+                    android:text="@string/reconnect_phone" android:textAllCaps="false" android:textColor="@color/teal_dark"
+                    android:textStyle="bold" app:backgroundTint="@color/surface" app:cornerRadius="15dp" app:strokeColor="@color/teal" app:strokeWidth="1dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/caregiverForm" android:visibility="gone" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="28dp" android:orientation="vertical">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/caregiver_setup"
+                android:textColor="@color/navy" android:textSize="26sp" android:textStyle="bold" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="5dp"
+                android:text="@string/caregiver_setup_description"
+                android:textColor="@color/muted" android:textSize="14sp" android:lineSpacingExtra="2dp" />
+
+            <com.google.android.material.textfield.TextInputLayout style="@style/MediTrackerInput"
+                android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="22dp" android:hint="@string/your_name">
+                <com.google.android.material.textfield.TextInputEditText android:id="@+id/caregiverNameInput"
+                    android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textPersonName" android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout style="@style/MediTrackerInput"
+                android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:hint="@string/relation_to_patient">
+                <com.google.android.material.textfield.TextInputEditText android:id="@+id/relationInput"
+                    android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textCapWords" android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout style="@style/MediTrackerInput"
+                android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:hint="@string/phone_optional">
+                <com.google.android.material.textfield.TextInputEditText android:id="@+id/phoneInput"
+                    android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="phone" android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout style="@style/MediTrackerInput"
+                android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:hint="@string/patient_family_key">
+                <com.google.android.material.textfield.TextInputEditText android:id="@+id/caregiverCodeInput"
+                    android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textCapCharacters" android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.button.MaterialButton android:id="@+id/connectCaregiverButton"
+                android:layout_width="match_parent" android:layout_height="56dp" android:layout_marginTop="16dp"
+                android:text="@string/connect_to_patient" android:textAllCaps="false" android:textColor="@color/white"
+                android:textSize="15sp" android:textStyle="bold" app:backgroundTint="@color/teal" app:cornerRadius="16dp" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp"
+                android:gravity="center" android:text="@string/family_key_privacy"
+                android:textColor="@color/muted" android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView android:id="@+id/statusText" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="16dp" android:gravity="center" android:textColor="@color/danger" android:textSize="13sp" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/backButton" android:visibility="gone"
+            android:layout_width="match_parent" android:layout_height="50dp" android:layout_marginTop="6dp"
+            android:text="@string/back_role_selection" android:textAllCaps="false" android:textColor="@color/navy_soft"
+            app:backgroundTint="@color/surface" app:cornerRadius="15dp" app:strokeColor="@color/line" app:strokeWidth="1dp" />
+    </LinearLayout>
+</ScrollView>
