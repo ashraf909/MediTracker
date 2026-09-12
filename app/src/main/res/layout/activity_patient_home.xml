@@ -1,0 +1,75 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="@color/page"
+    android:paddingStart="20dp" android:paddingTop="18dp" android:paddingEnd="20dp" android:paddingBottom="14dp">
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+            android:text="@string/app_name" android:textColor="@color/navy" android:textSize="20sp" android:textStyle="bold" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/settingsButton"
+            android:layout_width="wrap_content" android:layout_height="42dp" android:minWidth="0dp" android:paddingStart="13dp" android:paddingEnd="13dp"
+            android:text="@string/profile" android:textAllCaps="false" android:textColor="@color/teal_dark" android:textSize="12sp"
+            app:backgroundTint="@color/teal_soft" app:cornerRadius="14dp" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/signOutButton"
+            android:layout_width="wrap_content" android:layout_height="42dp" android:layout_marginStart="6dp" android:minWidth="0dp"
+            android:paddingStart="13dp" android:paddingEnd="13dp" android:text="@string/sign_out" android:textAllCaps="false"
+            android:textColor="@color/muted" android:textSize="12sp" app:backgroundTint="@color/surface"
+            app:cornerRadius="14dp" app:strokeColor="@color/line" app:strokeWidth="1dp" />
+    </LinearLayout>
+
+    <TextView android:id="@+id/patientGreeting" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="18dp" android:textColor="@color/navy" android:textSize="28sp" android:textStyle="bold" />
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="3dp" android:gravity="center_vertical">
+        <TextView android:id="@+id/familyCodeText" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+            android:textColor="@color/muted" android:textSize="13sp" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/copyFamilyKeyButton" android:layout_width="wrap_content" android:layout_height="36dp"
+            android:minWidth="0dp" android:paddingStart="11dp" android:paddingEnd="11dp" android:text="@string/copy" android:textAllCaps="false"
+            android:textColor="@color/teal_dark" android:textSize="11sp" app:backgroundTint="@color/teal_soft" app:cornerRadius="12dp" />
+    </LinearLayout>
+
+    <HorizontalScrollView android:layout_width="match_parent" android:layout_height="76dp" android:layout_marginTop="15dp"
+        android:clipToPadding="false" android:fillViewport="false" android:overScrollMode="never" android:scrollbars="none">
+        <LinearLayout android:id="@+id/dateStripContainer" android:layout_width="wrap_content" android:layout_height="match_parent"
+            android:gravity="center_vertical" android:orientation="horizontal" android:paddingStart="2dp" android:paddingEnd="2dp" />
+    </HorizontalScrollView>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp"
+        android:background="@drawable/bg_profile_accent" android:orientation="vertical" android:padding="17dp">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/next_medicine"
+            android:textColor="@color/teal_dark" android:textSize="11sp" android:textStyle="bold" android:letterSpacing="0.08" />
+        <TextView android:id="@+id/nextMedicineName" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="6dp" android:text="@string/no_more_medicine" android:textColor="@color/navy"
+            android:textSize="22sp" android:textStyle="bold" />
+        <TextView android:id="@+id/nextMedicineDetail" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="4dp" android:textColor="@color/navy_soft" android:textSize="13sp" />
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="11dp"
+        android:background="@drawable/bg_surface" android:gravity="center_vertical" android:paddingStart="15dp" android:paddingTop="11dp"
+        android:paddingEnd="15dp" android:paddingBottom="11dp">
+        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/connected_caregivers"
+                android:textColor="@color/teal_dark" android:textSize="11sp" android:textStyle="bold" android:letterSpacing="0.07" />
+            <TextView android:id="@+id/connectedCaregiversText" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="3dp" android:text="@string/no_caregiver_connected" android:textColor="@color/navy"
+                android:textSize="13sp" android:textStyle="bold" android:maxLines="2" />
+        </LinearLayout>
+        <TextView android:id="@+id/connectedCaregiverCount" android:layout_width="38dp" android:layout_height="38dp"
+            android:background="@drawable/bg_soft" android:gravity="center" android:text="@string/count_initial" android:textColor="@color/teal_dark"
+            android:textSize="16sp" android:textStyle="bold" />
+    </LinearLayout>
+
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="14dp"
+        android:text="@string/todays_medicines" android:textColor="@color/navy" android:textSize="17sp" android:textStyle="bold" />
+    <androidx.recyclerview.widget.RecyclerView android:id="@+id/medicineList" android:layout_width="match_parent"
+        android:layout_height="0dp" android:layout_weight="1" android:layout_marginTop="6dp"
+        android:clipToPadding="false" android:paddingBottom="8dp" />
+    <TextView android:id="@+id/emptyText" android:visibility="gone" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:gravity="center" android:padding="24dp"
+        android:text="@string/no_medicines_added" android:textColor="@color/muted" android:textSize="15sp" />
+    <com.google.android.material.button.MaterialButton android:id="@+id/testNextAlarmButton"
+        android:layout_width="match_parent" android:layout_height="50dp" android:text="@string/test_next_alarm"
+        android:textAllCaps="false" android:textColor="@color/teal_dark" android:textStyle="bold"
+        app:backgroundTint="@color/surface" app:cornerRadius="15dp" app:strokeColor="@color/line" app:strokeWidth="1dp" />
+</LinearLayout>

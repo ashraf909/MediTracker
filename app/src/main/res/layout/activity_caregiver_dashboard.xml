@@ -1,0 +1,82 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="@color/page"
+    android:paddingStart="20dp" android:paddingTop="18dp" android:paddingEnd="20dp" android:paddingBottom="14dp">
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+            android:text="@string/app_name" android:textColor="@color/navy" android:textSize="20sp" android:textStyle="bold" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/settingsButton"
+            android:layout_width="wrap_content" android:layout_height="42dp" android:minWidth="0dp" android:paddingStart="13dp" android:paddingEnd="13dp"
+            android:text="@string/profile" android:textAllCaps="false" android:textColor="@color/teal_dark" android:textSize="12sp"
+            app:backgroundTint="@color/teal_soft" app:cornerRadius="14dp" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/signOutButton"
+            android:layout_width="wrap_content" android:layout_height="42dp" android:layout_marginStart="6dp" android:minWidth="0dp"
+            android:paddingStart="13dp" android:paddingEnd="13dp" android:text="@string/sign_out" android:textAllCaps="false"
+            android:textColor="@color/muted" android:textSize="12sp" app:backgroundTint="@color/surface"
+            app:cornerRadius="14dp" app:strokeColor="@color/line" app:strokeWidth="1dp" />
+    </LinearLayout>
+
+    <TextView android:id="@+id/greetingText" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="18dp" android:textColor="@color/navy" android:textSize="28sp" android:textStyle="bold" />
+    <TextView android:id="@+id/patientStatusText" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="3dp" android:textColor="@color/muted" android:textSize="13sp" />
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="14dp"
+        android:background="@drawable/bg_profile_accent" android:gravity="center_vertical" android:padding="16dp">
+        <TextView android:id="@+id/patientInitialText" android:layout_width="48dp" android:layout_height="48dp"
+            android:background="@drawable/bg_date_selected" android:gravity="center" android:text="@string/patient_initial"
+            android:textColor="@color/white" android:textSize="20sp" android:textStyle="bold" />
+        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+            android:layout_marginStart="13dp" android:orientation="vertical">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/my_patient"
+                android:textColor="@color/teal_dark" android:textSize="11sp" android:textStyle="bold" android:letterSpacing="0.08" />
+            <TextView android:id="@+id/patientNameText" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="2dp" android:text="@string/patient_fallback" android:textColor="@color/navy" android:textSize="18sp" android:textStyle="bold" />
+            <TextView android:id="@+id/patientMetaText" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="2dp" android:textColor="@color/muted" android:textSize="12sp" />
+        </LinearLayout>
+        <TextView android:id="@+id/progressText" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="@string/progress_initial" android:textColor="@color/teal_dark" android:textSize="20sp" android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="9dp"
+        android:gravity="center_vertical" android:paddingStart="4dp" android:paddingEnd="4dp">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+            android:text="@string/family_key" android:textColor="@color/muted" android:textSize="12sp" />
+        <TextView android:id="@+id/familyCodeText" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:textColor="@color/navy" android:textSize="13sp" android:textStyle="bold" />
+        <TextView android:id="@+id/caregiverCountText" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginStart="10dp" android:textColor="@color/muted" android:textSize="11sp" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/copyFamilyKeyButton" android:layout_width="wrap_content" android:layout_height="34dp"
+            android:layout_marginStart="8dp" android:minWidth="0dp" android:paddingStart="10dp" android:paddingEnd="10dp"
+            android:text="@string/copy" android:textAllCaps="false" android:textColor="@color/teal_dark" android:textSize="11sp"
+            app:backgroundTint="@color/teal_soft" app:cornerRadius="11dp" />
+    </LinearLayout>
+
+    <HorizontalScrollView android:layout_width="match_parent" android:layout_height="76dp" android:layout_marginTop="10dp"
+        android:clipToPadding="false" android:fillViewport="false" android:overScrollMode="never" android:scrollbars="none">
+        <LinearLayout android:id="@+id/dateStripContainer" android:layout_width="wrap_content" android:layout_height="match_parent"
+            android:gravity="center_vertical" android:orientation="horizontal" android:paddingStart="2dp" android:paddingEnd="2dp" />
+    </HorizontalScrollView>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:gravity="center_vertical">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+            android:text="@string/todays_schedule" android:textColor="@color/navy" android:textSize="17sp" android:textStyle="bold" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/addMedicineButton"
+            android:layout_width="wrap_content" android:layout_height="46dp" android:minWidth="0dp" android:paddingStart="15dp" android:paddingEnd="15dp"
+            android:text="@string/add_medicine_button" android:textAllCaps="false" android:textColor="@color/white" android:textSize="12sp" android:textStyle="bold"
+            app:backgroundTint="@color/teal" app:cornerRadius="15dp" />
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView android:id="@+id/medicineList" android:layout_width="match_parent"
+        android:layout_height="0dp" android:layout_weight="1" android:layout_marginTop="5dp"
+        android:clipToPadding="false" android:paddingBottom="8dp" />
+    <TextView android:id="@+id/emptyText" android:visibility="gone" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:gravity="center" android:padding="24dp"
+        android:text="@string/no_schedule" android:textColor="@color/muted" android:textSize="14sp" />
+    <com.google.android.material.button.MaterialButton android:id="@+id/resetButton"
+        android:layout_width="match_parent" android:layout_height="50dp" android:text="@string/reset_today"
+        android:textAllCaps="false" android:textColor="@color/teal_dark" android:textStyle="bold"
+        app:backgroundTint="@color/surface" app:cornerRadius="15dp" app:strokeColor="@color/line" app:strokeWidth="1dp" />
+</LinearLayout>
