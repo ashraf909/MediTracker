@@ -1,0 +1,67 @@
+<resources>
+    <string name="app_name">মেডিট্র্যাকার</string><string name="simple_care">সহজ যত্ন</string><string name="language_short">EN</string>
+    <string name="language_title">অ্যাপের ভাষা</string><string name="language_english">English</string><string name="language_bangla">বাংলা</string>
+    <string name="profile">প্রোফাইল</string><string name="sign_out">সাইন আউট</string><string name="close">বন্ধ করুন</string>
+    <string name="cancel">বাতিল</string><string name="save">সংরক্ষণ</string><string name="delete">মুছুন</string><string name="edit">সম্পাদনা</string>
+    <string name="caregiver_fallback">কেয়ারগিভার</string><string name="patient_fallback">রোগী</string><string name="patient_initial">র</string><string name="today_accessibility">আজ, %1$s %2$s</string>
+    <string name="medicine_channel_name">ঔষধের অ্যালার্ম</string><string name="medicine_channel_description">মেডিট্র্যাকার বন্ধ থাকলেও ঔষধের অ্যালার্ম বাজবে</string>
+    <string name="medicine_reminder">ঔষধের স্মরণবার্তা</string><string name="medicine_due_now">এখন আপনার ঔষধ খাওয়ার সময়।</string><string name="your_medicine_due">আপনার ঔষধ এখন খেতে হবে।</string>
+    <string name="welcome_label">স্বাগতম</string><string name="welcome_title">সহজ যত্নে\nসবাই সংযুক্ত।</string>
+    <string name="welcome_description">এই ফোনটি কীভাবে ব্যবহার করবেন তা বেছে নিন। একটি ব্যক্তিগত ফ্যামিলি কী রোগী ও কেয়ারগিভারকে সংযুক্ত করে।</string>
+    <string name="patient_role">আমি রোগী  ›</string><string name="caregiver_role">আমি কেয়ারগিভার  ›</string>
+    <string name="roles_summary">একটি অ্যাপ • দুটি সহজ ভূমিকা • একটি সংযুক্ত পরিবার</string>
+    <string name="patient_setup">রোগীর তথ্য</string><string name="patient_setup_description">সহজ তথ্য দিন। পরের ধাপে আপনার ব্যক্তিগত ফ্যামিলি কী তৈরি হবে।</string>
+    <string name="patient_name">রোগীর নাম</string><string name="age">বয়স</string><string name="create_family_key">আমার ফ্যামিলি কী তৈরি করুন</string>
+    <string name="existing_family_key">আগের ফ্যামিলি কী আছে?</string><string name="reconnect_description">নতুন রোগী তৈরি না করে এই ফোনটি আবার সংযুক্ত করুন।</string>
+    <string name="family_key_example">ফ্যামিলি কী (ABCD-2345)</string><string name="reconnect_phone">এই ফোনটি আবার সংযুক্ত করুন</string>
+    <string name="caregiver_setup">কেয়ারগিভার হিসেবে সংযুক্ত হন</string><string name="caregiver_setup_description">নিজের তথ্য এবং রোগীর দেওয়া ফ্যামিলি কী লিখুন।</string>
+    <string name="your_name">আপনার নাম</string><string name="relation_to_patient">রোগীর সাথে সম্পর্ক</string><string name="phone_optional">ফোন (ঐচ্ছিক)</string>
+    <string name="patient_family_key">রোগীর ফ্যামিলি কী</string><string name="connect_to_patient">রোগীর সাথে সংযুক্ত হন</string>
+    <string name="family_key_privacy">শুধু সঠিক ফ্যামিলি কী থাকা ব্যক্তিই সংযুক্ত হতে পারবেন।</string><string name="back_role_selection">ভূমিকা নির্বাচনে ফিরে যান</string>
+    <string name="connecting_securely">নিরাপদভাবে সংযুক্ত হচ্ছে…</string><string name="error_patient_name">রোগীর নাম লিখুন।</string>
+    <string name="error_patient_age">রোগীর বয়স লিখুন।</string><string name="error_valid_age">সঠিক বয়স লিখুন।</string>
+    <string name="error_complete_key">সম্পূর্ণ ৮ অক্ষরের ফ্যামিলি কী লিখুন।</string><string name="error_caregiver_form">নাম, সম্পর্ক এবং সম্পূর্ণ ফ্যামিলি কী লিখুন।</string>
+    <string name="error_key_not_found">এই ফ্যামিলি কী পাওয়া যায়নি।</string><string name="error_pairing_disabled">এই রোগী নতুন কেয়ারগিভার সংযোগ বন্ধ রেখেছেন।</string>
+    <string name="error_connect">সংযোগ করা যায়নি। ইন্টারনেট ও Firebase সেটআপ দেখুন।</string>
+    <string name="family_code_format">ফ্যামিলি কী · %1$s</string><string name="greeting_patient">সুপ্রভাত%1$s</string><string name="next_medicine">পরবর্তী ঔষধ</string>
+    <string name="no_more_medicine">আজ আর কোনো ঔষধ নেই</string><string name="waiting_for_schedule">কেয়ারগিভার আপনার তালিকায় ঔষধ যোগ করতে পারবেন</string>
+    <string name="all_medicine_taken">আজকের সব ঔষধ নেওয়া হয়েছে</string><string name="connected_caregivers">সংযুক্ত কেয়ারগিভার</string>
+    <string name="no_caregiver_connected">এখনও কোনো কেয়ারগিভার যুক্ত নেই</string><string name="more_count">আরও %1$d জন</string>
+    <string name="todays_medicines">আজকের ঔষধসমূহ</string><string name="no_medicines_added">এখনও কোনো ঔষধ যোগ করা হয়নি</string>
+    <string name="test_next_alarm">পরবর্তী অ্যালার্ম পরীক্ষা করুন</string><string name="medicine_taken">ঔষধ নেওয়া হয়েছে</string>
+    <string name="error_sync_family">পরিবারের তথ্য সমন্বয় করা যায়নি।</string><string name="error_phone_not_linked_family">এই ফোনটি ওই পরিবারের সাথে যুক্ত নয়।</string>
+    <string name="error_update_firebase">Firebase-এ তথ্য হালনাগাদ করা যায়নি।</string>
+    <string name="caregiver_greeting">স্বাগতম, %1$s</string><string name="patient_update">%1$s-এর ঔষধের সর্বশেষ তথ্য</string><string name="my_patient">আমার রোগী</string>
+    <string name="patient_meta">বয়স %1$d  •  আপনার সম্পর্ক: %2$s</string><string name="patient_meta_unknown">বয়স —  •  আপনার সম্পর্ক: %1$s</string>
+    <string name="family_key">ফ্যামিলি কী</string><plurals name="caregivers_linked"><item quantity="one">%d জন কেয়ারগিভার যুক্ত</item><item quantity="other">%d জন কেয়ারগিভার যুক্ত</item></plurals>
+    <string name="progress_format">%1$d/%2$d</string><string name="progress_initial">০/০</string><string name="count_initial">০</string><string name="medicine_summary">%1$s  •  %2$s</string><string name="next_medicine_summary">%1$s  •  %2$s  •  %3$s</string><string name="todays_schedule">আজকের সময়সূচি</string><string name="add_medicine_button">+ ঔষধ যোগ করুন</string>
+    <string name="no_schedule">এখনও ঔষধ নেই। প্রথম সময়সূচি যোগ করুন।</string><string name="reset_today">আজকের ঔষধগুলো রিসেট করুন</string>
+    <string name="reminder_sent">রোগীর ফোনে স্মরণবার্তা পাঠানো হয়েছে।</string><string name="reminder_failed">স্মরণবার্তা পাঠানো যায়নি: %1$s</string><string name="reminder_failed_simple">স্মরণবার্তা পাঠানো যায়নি।</string>
+    <string name="delete_medicine_question">ঔষধটি মুছবেন?</string><string name="delete_medicine_message">%1$s • %2$s</string>
+    <string name="medicine_deleted">ঔষধটি মুছে ফেলা হয়েছে।</string><string name="doses_reset">সব ঔষধ আবার বাকি হিসেবে সেট হয়েছে।</string>
+    <string name="error_firebase_update">Firebase-এ তথ্য হালনাগাদ করা যায়নি।</string>
+    <string name="patient_profile">রোগীর প্রোফাইল</string><string name="patient_profile_description">রোগীর সাধারণ তথ্য পরিবর্তন করুন।</string>
+    <string name="caregiver_profile">কেয়ারগিভার প্রোফাইল</string><string name="caregiver_profile_description">রোগীর সাথে শেয়ার করা তথ্য পরিবর্তন করুন।</string>
+    <string name="profile_loading_patient">রোগীর প্রোফাইল লোড হচ্ছে।</string><string name="profile_loading_caregiver">কেয়ারগিভার প্রোফাইল লোড হচ্ছে।</string>
+    <string name="profile_updated">প্রোফাইল হালনাগাদ হয়েছে।</string><string name="profile_update_failed">প্রোফাইল হালনাগাদ করা যায়নি।</string>
+    <string name="enter_valid_age">সঠিক বয়স লিখুন</string><string name="enter_patient_name">রোগীর নাম লিখুন</string><string name="age_range">বয়স ১ থেকে ১২০-এর মধ্যে হতে হবে</string>
+    <string name="enter_your_name">আপনার নাম লিখুন</string><string name="enter_your_relation">রোগীর সাথে সম্পর্ক লিখুন</string>
+    <string name="copy_family_key">ফ্যামিলি কী কপি করুন</string><string name="copy">কপি</string><string name="family_key_copied">ফ্যামিলি কী কপি হয়েছে।</string>
+    <string name="add_medicine">ঔষধ যোগ করুন</string><string name="edit_medicine">ঔষধ সম্পাদনা করুন</string><string name="medicine_form_description">ঔষধের তথ্য ও প্রতিদিনের সময় যোগ করুন।</string>
+    <string name="medicine_details">ঔষধের তথ্য</string><string name="medicine_name_required">ঔষধের নাম *</string><string name="medicine_name_example">উদাহরণ: নাপা এক্সট্রা ৫০০ মিগ্রা</string>
+    <string name="bangla_name_optional">বাংলা নাম (ঐচ্ছিক)</string><string name="dose">ডোজ</string><string name="dose_example">উদাহরণ: ১টি ট্যাবলেট</string>
+    <string name="bangla_dose_optional">বাংলা ডোজ (ঐচ্ছিক)</string><string name="bangla_dose_example">উদাহরণ: ১টি ট্যাবলেট</string>
+    <string name="daily_schedule">প্রতিদিনের সময়সূচি</string><string name="medicine_times_question">কখন ঔষধটি খেতে হবে?</string>
+    <string name="medicine_times_description">এক বা একাধিক সময় বেছে নিন।</string><string name="add_time">+ সময় যোগ করুন</string><string name="no_times_selected">কোনো সময় নির্বাচন করা হয়নি</string>
+    <string name="how_to_take">কীভাবে খেতে হবে</string><string name="meal_instruction">খাবারের নির্দেশনা</string><string name="pill_color">ঔষধের রং</string>
+    <string name="voice_reminder">ভয়েস স্মরণবার্তা</string><string name="voice_reminder_optional">ভয়েস স্মরণবার্তা (ঐচ্ছিক)</string>
+    <string name="voice_reminder_help">খালি রাখলে ঔষধের তথ্য ব্যবহার হবে।</string><string name="save_medicine">ঔষধ সংরক্ষণ করুন</string>
+    <string name="schedule_sync_note">সময়সূচি রোগীর সাথে সমন্বয় হবে।</string><string name="meal_before">খাবারের আগে</string><string name="meal_after">খাবারের পরে</string><string name="meal_with">খাবারের সাথে</string>
+    <string name="color_teal">সবুজাভ নীল</string><string name="color_coral">প্রবাল</string><string name="color_violet">বেগুনি</string><string name="color_blue">নীল</string><string name="color_amber">হলুদ</string>
+    <string name="error_family_loading">Firebase থেকে তথ্য লোড হওয়া পর্যন্ত অপেক্ষা করুন।</string><string name="error_medicine_name_required">ঔষধের নাম আবশ্যক।</string>
+    <string name="error_time_required">কমপক্ষে একটি সময় বেছে নিন।</string><string name="medicine_saved">ঔষধ সংরক্ষণ হয়েছে।</string><string name="error_save_medicine">Firebase-এ সংরক্ষণ করা যায়নি।</string>
+    <string name="status_taken">নেওয়া হয়েছে</string><string name="status_pending">বাকি</string><string name="i_took_medicine">ঔষধ খেয়েছি</string><string name="send_reminder">স্মরণবার্তা পাঠান</string>
+    <string name="medicine_time_title">ঔষধ খাওয়ার সময় হয়েছে</string><string name="pill_placeholder">ঔষধ</string><string name="listen_again">আবার শুনুন</string>
+    <string name="snooze_ten_minutes">১০ মিনিট পরে মনে করান</string><string name="medicine_data_loading">ঔষধের তথ্য লোড হচ্ছে।</string>
+    <string name="speech_english">It is time to take %1$s. Please take %2$s.</string><string name="speech_bangla">আপনার %1$s ঔষধ খাওয়ার সময় হয়েছে। %2$s খেয়ে নিন।</string>
+</resources>
