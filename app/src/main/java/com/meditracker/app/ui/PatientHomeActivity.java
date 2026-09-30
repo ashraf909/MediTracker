@@ -54,6 +54,7 @@ public class PatientHomeActivity extends BaseActivity {
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState); setContentView(R.layout.activity_patient_home);
+        // Restore the local family session, prepare the medicine list and request alarm access.
         session = new SessionManager(this);
         if (!session.isLinked()) { goToOnboarding(); return; }
         ((TextView) findViewById(R.id.familyCodeText)).setText(getString(R.string.family_code_format, session.familyCode()));
@@ -71,10 +72,12 @@ public class PatientHomeActivity extends BaseActivity {
             MedicineDose next = nextPending(); if (next == null) Toast.makeText(this, R.string.no_more_medicine, Toast.LENGTH_SHORT).show(); else openAlarm(next, "test");
         });
         requestAlarmAccess();
+        // Register this installation as a destination for caregiver push reminders.
         FirebaseMessaging.getInstance().getToken().addOnSuccessListener(token -> repository.savePatientPushToken(session.familyCode(), token));
         listen();
     }
 
+    // Stream family changes, update the UI and keep native alarms synchronized.
     private void listen() {
         repository.listenFamily(session.familyCode(), new FirebaseRepository.FamilyListener() {
             @Override public void onData(FamilyState state) {
@@ -96,6 +99,7 @@ public class PatientHomeActivity extends BaseActivity {
         });
     }
 
+    // Render patient, caregiver, progress and next-dose information from the latest snapshot.
     private void render() {
         String name = patient == null || patient.getName().isEmpty() ? "" : ", " + patient.getName();
         ((TextView) findViewById(R.id.patientGreeting)).setText(getString(R.string.greeting_patient, name));
@@ -120,6 +124,7 @@ public class PatientHomeActivity extends BaseActivity {
         else { nextName.setText(next.displayName(this)); detail.setText(getString(R.string.next_medicine_summary, next.getTiming(), next.displayDosage(this), next.mealLabel(this))); }
     }
 
+    // Persist the taken state, then cancel future alarms for this exact dose.
     private void markTaken(MedicineDose dose) {
         repository.confirmTaken(session.familyCode(), dose.getId(), patient == null ? "Patient" : patient.getName(), new FirebaseRepository.Result<Void>() {
             @Override public void onSuccess(Void value) { MedicineAlarmScheduler.cancelMedicine(PatientHomeActivity.this, dose.getId()); Toast.makeText(PatientHomeActivity.this, R.string.medicine_taken, Toast.LENGTH_SHORT).show(); }
@@ -165,6 +170,7 @@ public class PatientHomeActivity extends BaseActivity {
         Toast.makeText(this, R.string.family_key_copied, Toast.LENGTH_SHORT).show();
     }
 
+    // Return doses taken on an earlier date to PENDING for today's schedule.
     private void resetForNewDay() {
         boolean changed = false;
         for (MedicineDose dose : medicines) if (dose.isTaken() && dose.getTakenDate() != null && !FirebaseRepository.dayKey().equals(dose.getTakenDate())) { dose.setStatus("PENDING"); dose.setTakenAt(null); dose.setTakenDate(null); changed = true; }
@@ -175,6 +181,7 @@ public class PatientHomeActivity extends BaseActivity {
         startActivity(new Intent(this, AlarmActivity.class).putExtra(MedicineAlarmScheduler.EXTRA_MEDICINE_ID, dose.getId()).putExtra(MedicineAlarmScheduler.EXTRA_REASON, reason));
     }
 
+    // Request notification, exact-alarm and full-screen permissions required by Android versions.
     private void requestAlarmAccess() {
         if (Build.VERSION.SDK_INT >= 33 && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !MedicineAlarmScheduler.canScheduleExact(this)) {
@@ -190,6 +197,7 @@ public class PatientHomeActivity extends BaseActivity {
     private int timeMinutes(String value) { try { java.util.Date d = new java.text.SimpleDateFormat("hh:mm a", java.util.Locale.US).parse(value); java.util.Calendar c = java.util.Calendar.getInstance(); c.setTime(d); return c.get(java.util.Calendar.HOUR_OF_DAY) * 60 + c.get(java.util.Calendar.MINUTE); } catch (Exception e) { return 9999; } }
     private FirebaseRepository.Result<Void> silentResult() { return new FirebaseRepository.Result<Void>() { public void onSuccess(Void v) {} public void onError(Exception e) {} }; }
 
+    // Remove push delivery, cancel local alarms and clear the local role/family session.
     private void signOut() {
         FirebaseMessaging.getInstance().getToken().addOnSuccessListener(token -> repository.removePatientPushToken(session.familyCode(), token));
         MedicineAlarmScheduler.cancelAll(this); session.clear(); goToOnboarding();

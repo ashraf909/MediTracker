@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.UUID;
 
 public class AddMedicineActivity extends BaseActivity {
+    // Stable colour codes saved in Firestore; displayed labels come from translated resources.
     private static final String[] COLOR_CODES = {"teal", "coral", "violet", "blue", "amber"};
     private final FirebaseRepository repository = FirebaseRepository.get();
     private SessionManager session; private ListenerRegistration registration; private FamilyState current; private MedicineDose editing;
@@ -43,6 +44,7 @@ public class AddMedicineActivity extends BaseActivity {
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState); setContentView(R.layout.activity_add_medicine); session = new SessionManager(this);
+        // Connect the Java fields to the inputs defined in activity_add_medicine.xml.
         name = findViewById(R.id.nameInput); banglaName = findViewById(R.id.banglaNameInput); dosage = findViewById(R.id.dosageInput);
         banglaDosage = findViewById(R.id.banglaDosageInput); voice = findViewById(R.id.voiceInput);
         meal = findViewById(R.id.mealSpinner); color = findViewById(R.id.colorSpinner); error = findViewById(R.id.errorText);
@@ -54,10 +56,12 @@ public class AddMedicineActivity extends BaseActivity {
         meal.setText(meals[1], false);
         color.setText(colors[0], false);
         findViewById(R.id.addTimeButton).setOnClickListener(v -> showTimePicker());
+        // A passed MedicineDose means this screen is editing instead of creating.
         editing = (MedicineDose) getIntent().getSerializableExtra("medicine");
         if (editing != null) fillEditing();
         findViewById(R.id.cancelButton).setOnClickListener(v -> finish());
         findViewById(R.id.saveButton).setOnClickListener(v -> save());
+        // Keep the latest family snapshot so a save never discards newer medicine data.
         repository.listenFamily(session.familyCode(), new FirebaseRepository.FamilyListener() {
             @Override public void onData(FamilyState state) { current = state; }
             @Override public void onError(Exception exception) { error.setText(R.string.error_sync_family); }
@@ -68,6 +72,7 @@ public class AddMedicineActivity extends BaseActivity {
     }
 
     private void fillEditing() {
+        // Restore the selected medicine's values into the form.
         ((TextView) findViewById(R.id.titleText)).setText(R.string.edit_medicine); name.setText(editing.getName()); banglaName.setText(editing.getBanglaName());
         dosage.setText(editing.getDosage()); banglaDosage.setText(editing.getBanglaDosage()); voice.setText(editing.getCustomVoiceText());
         if (!editing.getTiming().isEmpty()) selectedTimes.add(editing.getTiming());
@@ -79,14 +84,17 @@ public class AddMedicineActivity extends BaseActivity {
     }
 
     private void save() {
+        // Validate required data before changing the Firestore snapshot.
         if (current == null) { error.setText(R.string.error_family_loading); return; }
         String medicineName = value(name); if (medicineName.isEmpty()) { error.setText(R.string.error_medicine_name_required); return; }
         List<String> schedule = new ArrayList<>(selectedTimes); if (schedule.isEmpty()) { error.setText(R.string.error_time_required); return; }
         List<MedicineDose> next = new ArrayList<>(current.getMedicines());
+        // Remove the previous dose before inserting the edited replacement.
         if (editing != null) {
             Iterator<MedicineDose> iterator = next.iterator();
             while (iterator.hasNext()) if (iterator.next().getId().equals(editing.getId())) iterator.remove();
         }
+        // Every daily time becomes a separate dose, linked by one shared group ID.
         String group = editing == null || editing.getGroupId().isEmpty() ? "medicine_" + System.currentTimeMillis() + "_" + shortId() : editing.getGroupId();
         for (int i = 0; i < schedule.size(); i++) {
             MedicineDose dose = new MedicineDose(); dose.setId(editing != null && i == 0 ? editing.getId() : "dose_" + System.currentTimeMillis() + "_" + i + "_" + shortId());
@@ -99,6 +107,7 @@ public class AddMedicineActivity extends BaseActivity {
         ActivityLog log = new ActivityLog("log_" + System.currentTimeMillis(), FirebaseRepository.displayTime(), editing == null ? "Medicine added" : "Medicine updated", medicineName + " was scheduled " + schedule.size() + " time(s) daily.", "info");
         List<ActivityLog> logs = new ArrayList<>(); logs.add(log); logs.addAll(current.getLogs()); if (logs.size() > 50) logs = new ArrayList<>(logs.subList(0, 50));
         findViewById(R.id.saveButton).setEnabled(false);
+        // Save the full updated snapshot, then tell the patient device to refresh alarms.
         repository.saveSnapshot(session.familyCode(), current.getPatient(), next, logs, new FirebaseRepository.Result<Void>() {
             @Override public void onSuccess(Void value) { repository.notifyScheduleChanged(session.familyCode()); Toast.makeText(AddMedicineActivity.this, R.string.medicine_saved, Toast.LENGTH_SHORT).show(); finish(); }
             @Override public void onError(Exception exception) { findViewById(R.id.saveButton).setEnabled(true); error.setText(R.string.error_save_medicine); }
@@ -106,6 +115,7 @@ public class AddMedicineActivity extends BaseActivity {
     }
 
     private void showTimePicker() {
+        // Use Android's time picker and keep unique selections in chronological order.
         Calendar now = Calendar.getInstance();
         new TimePickerDialog(this, (picker, hour, minute) -> {
             Calendar selected = Calendar.getInstance(); selected.set(Calendar.HOUR_OF_DAY, hour); selected.set(Calendar.MINUTE, minute);
@@ -117,6 +127,7 @@ public class AddMedicineActivity extends BaseActivity {
     }
 
     private void renderSelectedTimes() {
+        // Rebuild removable chips from the selected time list.
         selectedTimesContainer.removeAllViews();
         noTimes.setVisibility(selectedTimes.isEmpty() ? View.VISIBLE : View.GONE);
         for (String time : selectedTimes) {
@@ -129,10 +140,13 @@ public class AddMedicineActivity extends BaseActivity {
             selectedTimesContainer.addView(chip);
         }
     }
+    // Convert a displayed time to minutes after midnight so times sort correctly.
     private int timeMinutes(String value) { try { Date date = new SimpleDateFormat("hh:mm a", Locale.US).parse(value); Calendar calendar = Calendar.getInstance(); calendar.setTime(date); return calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE); } catch (Exception ignored) { return 9999; } }
+    // Derive a simple period label used by the medicine model.
     private String period(String time) { try { Date date = new SimpleDateFormat("hh:mm a", Locale.US).parse(time); int hour = Integer.parseInt(new SimpleDateFormat("H", Locale.US).format(date)); return hour < 12 ? "Morning" : hour < 17 ? "Noon" : hour < 21 ? "Evening" : "Night"; } catch (Exception e) { return "Morning"; } }
     private String mealCode() { int index = selectedIndex(meal, meals, 1); return index == 0 ? "before_meal" : index == 2 ? "with_meal" : "after_meal"; }
     private String mealBangla() { int index = selectedIndex(meal, meals, 1); return index == 0 ? "খাবারের আগে" : index == 2 ? "খাবারের সাথে" : "খাবারের পর"; }
+    // Match a translated dropdown label to its stable option index.
     private int selectedIndex(MaterialAutoCompleteTextView input, String[] options, int fallback) {
         String selected = input.getText().toString().trim();
         for (int i = 0; i < options.length; i++) if (options[i].equalsIgnoreCase(selected)) return i;
@@ -141,5 +155,6 @@ public class AddMedicineActivity extends BaseActivity {
     private String value(EditText input) { return input.getText().toString().trim(); }
     private String fallback(String value, String replacement) { return value.isEmpty() ? replacement : value; }
     private String shortId() { return UUID.randomUUID().toString().substring(0, 4); }
+    // Stop the Firestore listener when this screen is destroyed.
     @Override protected void onDestroy() { if (registration != null) registration.remove(); super.onDestroy(); }
 }

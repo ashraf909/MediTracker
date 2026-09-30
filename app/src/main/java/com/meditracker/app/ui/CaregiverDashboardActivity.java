@@ -40,6 +40,7 @@ public class CaregiverDashboardActivity extends BaseActivity {
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState); setContentView(R.layout.activity_caregiver_dashboard); session = new SessionManager(this);
+        // Prepare caregiver actions and continuously display the linked patient's family state.
         if (!session.isLinked()) { goToOnboarding(); return; }
         DateStripHelper.bind(this, (LinearLayout) findViewById(R.id.dateStripContainer));
         RecyclerView list = findViewById(R.id.medicineList); list.setLayoutManager(new LinearLayoutManager(this));
@@ -56,6 +57,7 @@ public class CaregiverDashboardActivity extends BaseActivity {
         listen();
     }
 
+    // Stream the shared family so patient, caregiver and medicine changes appear immediately.
     private void listen() {
         repository.listenFamily(session.familyCode(), new FirebaseRepository.FamilyListener() {
             @Override public void onData(FamilyState state) {
@@ -87,6 +89,7 @@ public class CaregiverDashboardActivity extends BaseActivity {
         adapter.submit(medicines); findViewById(R.id.emptyText).setVisibility(medicines.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
+    // Prefer the authenticated UID when matching this installation to its caregiver profile.
     private Caregiver findCurrentCaregiver() {
         String userId = repository.currentUserId();
         for (Caregiver caregiver : caregivers) if (!userId.isEmpty() && userId.equals(caregiver.getId())) return caregiver;
@@ -94,6 +97,7 @@ public class CaregiverDashboardActivity extends BaseActivity {
         return null;
     }
 
+    // Re-add profile details when memberUids contains this UID but caregivers does not.
     private void repairMissingCaregiverProfile() {
         caregiverRepairRequested = true;
         String name = session.caregiverName().isEmpty() ? getString(R.string.caregiver_fallback) : session.caregiverName();
@@ -135,6 +139,7 @@ public class CaregiverDashboardActivity extends BaseActivity {
         dialog.show();
     }
 
+    // Ask the repository and backend to push this dose reminder to patient devices.
     private void sendReminder(MedicineDose dose) {
         repository.sendReminder(session.familyCode(), dose, new FirebaseRepository.Result<Void>() {
             @Override public void onSuccess(Void value) { runOnUiThread(() -> Toast.makeText(CaregiverDashboardActivity.this, R.string.reminder_sent, Toast.LENGTH_SHORT).show()); }
@@ -153,6 +158,7 @@ public class CaregiverDashboardActivity extends BaseActivity {
             }).show();
     }
 
+    // Return every dose to PENDING and notify patient devices to rebuild their alarms.
     private void resetToday() {
         List<MedicineDose> next = new ArrayList<>(medicines);
         for (MedicineDose dose : next) { dose.setStatus("PENDING"); dose.setTakenAt(null); dose.setTakenDate(null); }

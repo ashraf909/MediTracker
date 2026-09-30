@@ -14,6 +14,7 @@ public class AlarmAudioManager implements TextToSpeech.OnInitListener {
     private String pendingSpeech;
 
     public AlarmAudioManager(Context context) { this.context = context.getApplicationContext(); speech = new TextToSpeech(context, this); }
+    // Start a looping alarm sound using the system alarm audio stream.
     public void startAlarm() {
         stopAlarm();
         try {
@@ -23,11 +24,13 @@ public class AlarmAudioManager implements TextToSpeech.OnInitListener {
             player.setLooping(true); player.prepare(); player.start();
         } catch (Exception ignored) {}
     }
+    // Speak immediately when text-to-speech is ready or remember the text until initialization.
     public void speak(String value) {
         pendingSpeech = value;
         if (speech != null) speech.speak(value, TextToSpeech.QUEUE_FLUSH, null, "meditracker-reminder");
     }
     public void stopAlarm() { if (player != null) { try { player.stop(); } catch (Exception ignored) {} player.release(); player = null; } }
+    // Release both audio services when the alarm screen closes.
     public void close() { stopAlarm(); if (speech != null) { speech.stop(); speech.shutdown(); speech = null; } }
     @Override public void onInit(int status) {
         if (status == TextToSpeech.SUCCESS && speech != null) {

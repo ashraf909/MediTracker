@@ -12,6 +12,7 @@ import com.meditracker.app.model.FamilyState;
 import java.util.Map;
 
 public class MediTrackerMessagingService extends FirebaseMessagingService {
+    // Handle caregiver reminders and background schedule-refresh messages from FCM.
     @Override public void onMessageReceived(@NonNull RemoteMessage message) {
         Map<String, String> data = message.getData();
         if ("schedule_updated".equals(data.get("type"))) {
@@ -35,6 +36,7 @@ public class MediTrackerMessagingService extends FirebaseMessagingService {
         sendBroadcast(alarm);
     }
 
+    // Replace the stored delivery address whenever Firebase rotates this device's token.
     @Override public void onNewToken(@NonNull String token) {
         SessionManager session = new SessionManager(this);
         if (SessionManager.PATIENT.equals(session.role()) && session.isLinked()) FirebaseRepository.get().savePatientPushToken(session.familyCode(), token);

@@ -14,6 +14,7 @@ import com.meditracker.app.ui.AlarmActivity;
 import com.meditracker.app.ui.LocaleManager;
 
 public class MedicineAlarmReceiver extends BroadcastReceiver {
+    // Convert a fired AlarmManager intent into a full-screen, audible notification.
     @Override public void onReceive(Context context, Intent intent) {
         if (intent == null || !MedicineAlarmScheduler.ACTION_FIRE.equals(intent.getAction())) return;
         String medicineId = intent.getStringExtra(MedicineAlarmScheduler.EXTRA_MEDICINE_ID);

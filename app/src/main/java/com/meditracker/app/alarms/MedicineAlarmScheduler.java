@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public final class MedicineAlarmScheduler {
+    // Alarm metadata is stored locally so schedules can survive process death and reboot.
     public static final String CHANNEL_ID = "medicine-alarms-native-v1";
     public static final String ACTION_FIRE = "com.meditracker.app.NATIVE_MEDICINE_ALARM";
     public static final String EXTRA_ID = "notificationId";
@@ -39,6 +40,7 @@ public final class MedicineAlarmScheduler {
 
     private MedicineAlarmScheduler() {}
 
+    // Create the high-priority Android notification channel with sound and vibration.
     public static void ensureChannel(Context context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return;
         NotificationManager manager = context.getSystemService(NotificationManager.class);
@@ -54,6 +56,7 @@ public final class MedicineAlarmScheduler {
         manager.createNotificationChannel(channel);
     }
 
+    // Replace obsolete alarms and schedule upcoming PENDING doses for the next 30 days.
     public static synchronized void syncMedicines(Context context, List<MedicineDose> medicines) {
         try {
             JSONArray alarms = new JSONArray();
@@ -95,6 +98,7 @@ public final class MedicineAlarmScheduler {
         } catch (Exception ignored) {}
     }
 
+    // Cancel an older snooze for this dose and schedule a new one after the requested delay.
     public static synchronized void snooze(Context context, MedicineDose medicine, int minutes) {
         try {
             JSONArray existing = read(context);
@@ -113,11 +117,13 @@ public final class MedicineAlarmScheduler {
         } catch (Exception ignored) {}
     }
 
+    // Cancel every stored alarm belonging to one medicine dose.
     public static synchronized void cancelMedicine(Context context, String medicineId) {
         try { save(context, removeMedicine(context, medicineId)); } catch (Exception ignored) {}
         NotificationManagerCompat.from(context).cancel(notificationTag(medicineId), 0);
     }
 
+    // Cancel and remove all local MediTracker alarms, usually during patient sign-out.
     public static synchronized void cancelAll(Context context) {
         try {
             JSONArray stored = read(context);
@@ -131,6 +137,7 @@ public final class MedicineAlarmScheduler {
         } catch (Exception ignored) {}
     }
 
+    // Re-register future alarms saved in SharedPreferences after restart or reboot.
     public static synchronized void restore(Context context) {
         try {
             JSONArray stored = read(context); JSONArray future = new JSONArray();
@@ -171,6 +178,7 @@ public final class MedicineAlarmScheduler {
         return kept;
     }
 
+    // Use an exact alarm when Android permits it, otherwise use an idle-safe fallback.
     private static void schedule(Context context, JSONObject alarm) {
         int id = alarm.optInt(EXTRA_ID);
         PendingIntent pending = PendingIntent.getBroadcast(context, id, receiverIntent(context, alarm), PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);

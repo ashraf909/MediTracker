@@ -3,6 +3,7 @@ package com.meditracker.app.model;
 import java.util.HashMap;
 import java.util.Map;
 
+// One human-readable history entry such as medicine added, removed or taken.
 public class ActivityLog {
     private String id = "";
     private String time = "";
@@ -15,6 +16,7 @@ public class ActivityLog {
         this.id = id; this.time = time; this.title = title; this.description = description; this.type = type;
     }
 
+    // Rebuild a log entry from Firestore data.
     public static ActivityLog fromMap(Map<String, Object> map) {
         if (map == null) return new ActivityLog();
         return new ActivityLog(value(map.get("id")), value(map.get("time")), value(map.get("title")), value(map.get("description")), value(map.get("type")));

@@ -3,6 +3,7 @@ package com.meditracker.app.model;
 import java.util.HashMap;
 import java.util.Map;
 
+// Caregiver profile whose id normally matches its Firebase Authentication UID.
 public class Caregiver {
     private String id = "";
     private String name = "";
@@ -14,6 +15,7 @@ public class Caregiver {
 
     public Caregiver() {}
 
+    // Rebuild a caregiver from a map read from Firestore.
     public static Caregiver fromMap(Map<String, Object> map) {
         Caregiver caregiver = new Caregiver();
         if (map == null) return caregiver;
@@ -27,6 +29,7 @@ public class Caregiver {
         return caregiver;
     }
 
+    // Convert the caregiver into a Firestore-compatible map.
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
         map.put("id", id); map.put("name", name); map.put("relation", relation);

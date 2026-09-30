@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 public class MedicineAlarmBootReceiver extends BroadcastReceiver {
+    // Restore saved alarms after device boot, app update or exact-alarm permission changes.
     @Override public void onReceive(Context context, Intent intent) {
         if (intent == null) return;
         String action = intent.getAction();

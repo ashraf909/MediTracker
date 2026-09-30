@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+// Patient profile stored inside one Firestore family document.
 public class Patient implements Serializable {
     private String id = "";
     private String name = "";
@@ -13,6 +14,7 @@ public class Patient implements Serializable {
 
     public Patient() {}
 
+    // Rebuild a Java model from Firestore data.
     public static Patient fromMap(Map<String, Object> map) {
         Patient patient = new Patient();
         if (map == null) return patient;
@@ -25,6 +27,7 @@ public class Patient implements Serializable {
         return patient;
     }
 
+    // Convert the model into fields that Firestore can store.
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
         map.put("id", id);

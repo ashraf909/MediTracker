@@ -19,6 +19,7 @@ public class AlarmActivity extends BaseActivity {
     private SessionManager session; private ListenerRegistration registration; private MedicineDose medicine; private AlarmAudioManager audio; private String medicineId;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
+        // Show over the lock screen, start sound and load the alarmed dose from Firestore.
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         setContentView(R.layout.activity_alarm); session = new SessionManager(this); audio = new AlarmAudioManager(this); audio.startAlarm();
@@ -37,6 +38,7 @@ public class AlarmActivity extends BaseActivity {
         });
     }
 
+    // Display the current medicine details using the saved pill colour and language.
     private void render() {
         ((TextView) findViewById(R.id.timeText)).setText(medicine.getTiming());
         TextView pill = findViewById(R.id.pillText);
@@ -64,6 +66,7 @@ public class AlarmActivity extends BaseActivity {
             : medicine.getCustomVoiceText();
         audio.speak(text);
     }
+    // Persist the taken state before cancelling alarms for this dose.
     private void taken() {
         if (medicine == null) { Toast.makeText(this, R.string.medicine_data_loading, Toast.LENGTH_SHORT).show(); return; }
         audio.stopAlarm(); repository.confirmTaken(session.familyCode(), medicine.getId(), getString(R.string.patient_fallback), new FirebaseRepository.Result<Void>() {
@@ -71,6 +74,7 @@ public class AlarmActivity extends BaseActivity {
             @Override public void onError(Exception error) { audio.startAlarm(); Toast.makeText(AlarmActivity.this, R.string.error_update_firebase, Toast.LENGTH_LONG).show(); }
         });
     }
+    // Clear the remote alert and schedule a new local alarm ten minutes later.
     private void snooze() {
         if (medicine == null) { Toast.makeText(this, R.string.medicine_data_loading, Toast.LENGTH_SHORT).show(); return; }
         audio.stopAlarm(); repository.clearAlert(session.familyCode()); MedicineAlarmScheduler.snooze(this, medicine, 10); finish();

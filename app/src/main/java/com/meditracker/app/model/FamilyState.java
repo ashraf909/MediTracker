@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+// Read-only snapshot combining every app-facing section of one family document.
 public class FamilyState {
     private final Patient patient;
     private final List<Caregiver> caregivers;
@@ -20,6 +21,7 @@ public class FamilyState {
     }
 
     @SuppressWarnings("unchecked")
+    // Convert nested Firestore maps and arrays into strongly typed Java models.
     public static FamilyState fromMap(Map<String, Object> data) {
         Patient patient = Patient.fromMap((Map<String, Object>) data.get("patient"));
         List<Caregiver> caregivers = new ArrayList<>();

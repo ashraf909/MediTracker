@@ -13,12 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Holder> {
+    // The hosting Activity supplies different actions for patient and caregiver modes.
     public interface Actions { void onPrimary(MedicineDose dose); void onEdit(MedicineDose dose); void onDelete(MedicineDose dose); }
     private final boolean patientMode;
     private final Actions actions;
     private final List<MedicineDose> values = new ArrayList<>();
 
     public MedicineAdapter(boolean patientMode, Actions actions) { this.patientMode = patientMode; this.actions = actions; }
+    // Replace the displayed schedule with the latest Firestore medicine list.
     public void submit(List<MedicineDose> next) { values.clear(); values.addAll(next); notifyDataSetChanged(); }
 
     @NonNull @Override public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

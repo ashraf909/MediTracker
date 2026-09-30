@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+// One scheduled dose; multiple daily times share a groupId but keep separate dose IDs.
 public class MedicineDose implements Serializable {
     private String id = "";
     private String groupId = "";
@@ -26,6 +27,7 @@ public class MedicineDose implements Serializable {
 
     public MedicineDose() {}
 
+    // Rebuild one scheduled dose from Firestore data.
     public static MedicineDose fromMap(Map<String, Object> map) {
         MedicineDose dose = new MedicineDose();
         if (map == null) return dose;
@@ -47,6 +49,7 @@ public class MedicineDose implements Serializable {
         return dose;
     }
 
+    // Convert this dose into fields that can be saved in a Firestore array.
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
         map.put("id", id);

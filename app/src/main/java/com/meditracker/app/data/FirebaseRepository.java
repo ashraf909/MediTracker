@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class FirebaseRepository {
+    // Excludes visually confusing characters so family keys are easier to read and type.
     private static final String ALPHABET = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
     private static final FirebaseRepository INSTANCE = new FirebaseRepository();
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -48,11 +49,13 @@ public class FirebaseRepository {
     public static FirebaseRepository get() { return INSTANCE; }
     private FirebaseRepository() {}
 
+    // Return the UID of the Firebase user currently stored on this app installation.
     public String currentUserId() {
         FirebaseUser user = auth.getCurrentUser();
         return user == null ? "" : user.getUid();
     }
 
+    // Reuse the current anonymous user or create one before a protected operation.
     private void withUser(Result<FirebaseUser> result) {
         FirebaseUser current = auth.getCurrentUser();
         if (current != null) { result.onSuccess(current); return; }
@@ -60,10 +63,12 @@ public class FirebaseRepository {
             .addOnFailureListener(result::onError);
     }
 
+    // Convert a displayed family key into its Firestore document reference.
     private DocumentReference family(String code) {
         return database.collection("families").document(SessionManager.normalizeCode(code));
     }
 
+    // Authenticate the patient, then create a new family and return its shareable key.
     public void createPatient(String name, long age, Result<String> result) {
         withUser(new Result<FirebaseUser>() {
             @Override public void onSuccess(FirebaseUser user) { tryCreatePatient(user, name.trim(), age, 0, result); }
@@ -71,6 +76,7 @@ public class FirebaseRepository {
         });
     }
 
+    // Retry with a new random key if a generated family document cannot be created.
     private void tryCreatePatient(FirebaseUser user, String name, long age, int attempt, Result<String> result) {
         if (attempt >= 6) { result.onError(new IllegalStateException("Could not create a unique family code.")); return; }
         String code = generateCode();
@@ -104,10 +110,12 @@ public class FirebaseRepository {
             });
     }
 
+    // Link the current patient installation to an existing family without adding a caregiver profile.
     public void reconnectPatient(String code, Result<FamilyState> result) {
         join(code, null, true, result);
     }
 
+    // Build a caregiver profile and link its Firebase UID to the entered family key.
     public void joinCaregiver(String code, String name, String relation, String phone, Result<FamilyState> result) {
         Caregiver caregiver = new Caregiver();
         caregiver.setName(name.trim());
@@ -119,6 +127,7 @@ public class FirebaseRepository {
     }
 
     @SuppressWarnings("unchecked")
+    // Add the current UID to memberUids and add or repair a caregiver profile when required.
     private void join(String code, Caregiver caregiver, boolean returningPatient, Result<FamilyState> result) {
         String normalized = SessionManager.normalizeCode(code);
         if (normalized.length() != 8) { result.onError(new IllegalArgumentException("INVALID_CODE")); return; }
@@ -166,6 +175,7 @@ public class FirebaseRepository {
     }
 
     @SuppressWarnings("unchecked")
+    // Verify membership, then stream every future change to this family document.
     public void listenFamily(String code, FamilyListener listener, Result<ListenerRegistration> ready) {
         withUser(new Result<FirebaseUser>() {
             @Override public void onSuccess(FirebaseUser user) {
@@ -188,6 +198,7 @@ public class FirebaseRepository {
     }
 
     @SuppressWarnings("unchecked")
+    // Verify membership and read one current copy of the family without keeping a listener.
     public void fetchFamily(String code, Result<FamilyState> result) {
         withUser(new Result<FirebaseUser>() {
             @Override public void onSuccess(FirebaseUser user) {
@@ -206,6 +217,7 @@ public class FirebaseRepository {
         });
     }
 
+    // Save the current patient, medicine list and activity-log list as one family update.
     public void saveSnapshot(String code, Patient patient, List<MedicineDose> medicines, List<ActivityLog> logs, Result<Void> result) {
         Map<String, Object> changes = new HashMap<>();
         changes.put("patient", patient.toMap());
@@ -215,6 +227,7 @@ public class FirebaseRepository {
         family(code).update(changes).addOnSuccessListener(unused -> result.onSuccess(null)).addOnFailureListener(result::onError);
     }
 
+    // Update only the patient profile and last-updated time.
     public void updatePatientProfile(String code, Patient patient, Result<Void> result) {
         Map<String, Object> changes = new HashMap<>();
         changes.put("patient", patient.toMap());
@@ -224,6 +237,7 @@ public class FirebaseRepository {
             .addOnFailureListener(result::onError);
     }
 
+    // Use a transaction to update the caregiver profile that belongs to the current UID.
     public void updateCaregiverProfile(String code, Caregiver profile, Result<Void> result) {
         withUser(new Result<FirebaseUser>() {
             @Override public void onSuccess(FirebaseUser user) {
@@ -255,6 +269,7 @@ public class FirebaseRepository {
         });
     }
 
+    // Atomically mark one dose taken, add a log and clear any active reminder.
     public void confirmTaken(String code, String medicineId, String patientName, Result<Void> result) {
         DocumentReference reference = family(code);
         String takenAt = displayTime();
@@ -282,21 +297,25 @@ public class FirebaseRepository {
         }).addOnSuccessListener(unused -> result.onSuccess(null)).addOnFailureListener(result::onError);
     }
 
+    // Remove the active caregiver alert, for example when the patient snoozes it.
     public void clearAlert(String code) {
         if (SessionManager.normalizeCode(code).length() != 8) return;
         family(code).update("alert", null, "updatedAt", FieldValue.serverTimestamp());
     }
 
+    // Store this patient installation's FCM delivery token without duplicates.
     public void savePatientPushToken(String code, String token) {
         if (token == null || token.isEmpty() || SessionManager.normalizeCode(code).length() != 8) return;
         family(code).update("patientPushTokens", FieldValue.arrayUnion(token), "updatedAt", FieldValue.serverTimestamp());
     }
 
+    // Stop push delivery to this patient installation after local sign-out.
     public void removePatientPushToken(String code, String token) {
         if (token == null || token.isEmpty() || SessionManager.normalizeCode(code).length() != 8) return;
         family(code).update("patientPushTokens", FieldValue.arrayRemove(token), "updatedAt", FieldValue.serverTimestamp());
     }
 
+    // Save an active alert, then ask the backend to push it to the patient device.
     public void sendReminder(String code, MedicineDose medicine, Result<Void> result) {
         withUser(new Result<FirebaseUser>() {
             @Override public void onSuccess(FirebaseUser user) {
@@ -312,6 +331,7 @@ public class FirebaseRepository {
         });
     }
 
+    // Ask the backend to tell patient devices to download and reschedule changed doses.
     public void notifyScheduleChanged(String code) {
         withUser(new Result<FirebaseUser>() {
             @Override public void onSuccess(FirebaseUser user) {
@@ -322,6 +342,7 @@ public class FirebaseRepository {
         });
     }
 
+    // Perform the authenticated HTTP request used by notifyScheduleChanged().
     private void postScheduleSync(String code, String idToken) {
         HttpURLConnection connection = null;
         try {
@@ -337,6 +358,7 @@ public class FirebaseRepository {
         finally { if (connection != null) connection.disconnect(); }
     }
 
+    // Perform the authenticated HTTP request that triggers an FCM caregiver reminder.
     private void postReminder(String code, String medicineId, String alertId, String idToken, Result<Void> result) {
         HttpURLConnection connection = null;
         try {
@@ -364,6 +386,7 @@ public class FirebaseRepository {
         return text.toString();
     }
 
+    // Convert model objects into maps that Firestore can store.
     public static List<Map<String, Object>> medicineMaps(List<MedicineDose> values) {
         List<Map<String, Object>> result = new ArrayList<>();
         for (MedicineDose value : values) result.add(value.toMap());
@@ -380,6 +403,7 @@ public class FirebaseRepository {
         if (value instanceof List) for (Object item : (List<?>) value) if (item instanceof Map) result.add(new HashMap<>((Map<String, Object>) item));
         return result;
     }
+    // Generate the eight-character Firestore document ID used as the family key.
     private String generateCode() {
         StringBuilder code = new StringBuilder(); for (int i = 0; i < 8; i++) code.append(ALPHABET.charAt(random.nextInt(ALPHABET.length()))); return code.toString();
     }

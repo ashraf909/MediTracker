@@ -20,6 +20,7 @@ public class RoleSelectionActivity extends BaseActivity {
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Display the role choices and wire each form action to its repository operation.
         setContentView(R.layout.activity_role_selection);
         roleButtons = findViewById(R.id.roleButtons); patientForm = findViewById(R.id.patientForm); caregiverForm = findViewById(R.id.caregiverForm);
         status = findViewById(R.id.statusText); createPatient = findViewById(R.id.createPatientButton);
@@ -48,6 +49,7 @@ public class RoleSelectionActivity extends BaseActivity {
     private String text(int id) { return ((EditText) findViewById(id)).getText().toString().trim(); }
     private void working(Button button, boolean value) { button.setEnabled(!value); status.setText(value ? getString(R.string.connecting_securely) : ""); }
 
+    // Validate the form, create a Firebase family and remember the patient session locally.
     private void createPatient() {
         String name = text(R.id.patientNameInput); if (name.isEmpty()) { status.setText(R.string.error_patient_name); return; }
         long age; try { age = Long.parseLong(text(R.id.patientAgeInput)); }
@@ -63,6 +65,7 @@ public class RoleSelectionActivity extends BaseActivity {
         });
     }
 
+    // Link this patient installation to an existing family using its shared key.
     private void reconnectPatient() {
         String code = text(R.id.patientCodeInput); if (SessionManager.normalizeCode(code).length() != 8) { status.setText(R.string.error_complete_key); return; }
         working(reconnectPatient, true);
@@ -75,6 +78,7 @@ public class RoleSelectionActivity extends BaseActivity {
         });
     }
 
+    // Add this caregiver UID and profile to the family identified by the entered key.
     private void connectCaregiver() {
         String name = text(R.id.caregiverNameInput), relation = text(R.id.relationInput), phone = text(R.id.phoneInput), code = text(R.id.caregiverCodeInput);
         if (name.isEmpty() || relation.isEmpty() || SessionManager.normalizeCode(code).length() != 8) { status.setText(R.string.error_caregiver_form); return; }
@@ -88,6 +92,7 @@ public class RoleSelectionActivity extends BaseActivity {
         });
     }
 
+    // Convert internal repository errors into clear messages for the user.
     private String friendly(Exception error) {
         String message = error.getMessage() == null ? "" : error.getMessage();
         if (message.contains("INVALID_CODE")) return getString(R.string.error_key_not_found);
